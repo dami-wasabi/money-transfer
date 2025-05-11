@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-#Configuration
+# Configuration
 SENDING_FEES = 0.02
 EXCHANGE_RATE = 655
 
@@ -15,7 +15,7 @@ def calculate():
     try:
         user_amount = float(request.form['amount'])
 
-#Calculations
+        # Calculations
         fee_amount = SENDING_FEES * user_amount
         amount_plus_fees = user_amount + fee_amount
         receiving_amount = EXCHANGE_RATE * user_amount
@@ -29,5 +29,5 @@ def calculate():
     except:
         return jsonify({'success': False, 'message': 'Please enter a valid amount'})
 
-if __name__ == 'main':
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')  # host='0.0.0.0' is needed for Docker
