@@ -76,6 +76,9 @@ jobs:
           curl -fsS -X POST http://localhost:8000/api/quote \
             -H 'Content-Type: application/json' -d '{"amount": "100"}' | tee quote.json
           grep -q '"total_to_pay":"102.00"' quote.json
+          # Metrics are aggregated across gunicorn workers and count the request above.
+          curl -fsS http://localhost:8000/metrics | tee metrics.txt | grep '^http_requests_total'
+          grep -q '^http_requests_total{method="POST",route="/api/quote",status="200"} 1.0$' metrics.txt
           test "$(docker inspect --format '{{.Config.User}}' money-transfer:ci)" = "10001"
 
       - name: Show container logs
