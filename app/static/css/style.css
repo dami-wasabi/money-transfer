@@ -48,8 +48,13 @@ body {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 15px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 32px;
 }
 
 .header h1 {
@@ -91,6 +96,7 @@ body {
 }
 
 button {
+    font-family: inherit;
     padding: 12px 20px;
     border: none;
     border-radius: var(--border-radius);
@@ -198,4 +204,26 @@ button {
         flex-direction: column;
         gap: 15px;
     }
+}
+
+[hidden] {
+    display: none !important;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.error {
+    margin: 10px 0 0;
+    color: var(--danger-color);
+    font-size: 14px;
+    text-align: left;
+}
+
+.disclaimer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--secondary-color);
 }
