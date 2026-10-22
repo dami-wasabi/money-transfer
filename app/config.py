@@ -32,6 +32,9 @@ class Settings:
     exchange_rate: Decimal
     min_amount: Decimal
     max_amount: Decimal
+    # Chaos-engineering switches. Off by default; a warning is logged at startup if set.
+    fault_error_rate: Decimal = Decimal("0")  # share of quote requests answered with 503
+    fault_latency_ms: Decimal = Decimal("0")  # delay added to every quote request
 
     @classmethod
     def from_env(cls, env: Mapping[str, str] | None = None) -> Settings:
@@ -42,6 +45,8 @@ class Settings:
             exchange_rate=_decimal(env, "EXCHANGE_RATE", "655"),
             min_amount=_decimal(env, "MIN_AMOUNT", "1"),
             max_amount=_decimal(env, "MAX_AMOUNT", "10000"),
+            fault_error_rate=_decimal(env, "FAULT_ERROR_RATE", "0"),
+            fault_latency_ms=_decimal(env, "FAULT_LATENCY_MS", "0"),
         )
         settings.validate()
         return settings
@@ -55,3 +60,11 @@ class Settings:
             raise ConfigError("MIN_AMOUNT must be greater than 0")
         if self.max_amount < self.min_amount:
             raise ConfigError("MAX_AMOUNT must be at least MIN_AMOUNT")
+        if not Decimal("0") <= self.fault_error_rate <= Decimal("1"):
+            raise ConfigError("FAULT_ERROR_RATE must be between 0 and 1")
+        if not Decimal("0") <= self.fault_latency_ms <= Decimal("10000"):
+            raise ConfigError("FAULT_LATENCY_MS must be between 0 and 10000")
+
+    @property
+    def faults_enabled(self) -> bool:
+        return self.fault_error_rate > 0 or self.fault_latency_ms > 0
