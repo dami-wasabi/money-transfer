@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: money-transfer:local
+    ports:
+      - "8000:8000"
+    environment:
+      FEE_RATE: "0.02"
+      EXCHANGE_RATE: "655"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

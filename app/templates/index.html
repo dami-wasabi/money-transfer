@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Transfer Quote</title>
+    <link rel="icon" href="data:,">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <div class="transfer-card">
+            <div class="header">
+                <div class="logo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+                </div>
+                <h1>Money Transfer Quote</h1>
+                <p>See exactly what you pay and what your family receives in Cameroon</p>
+            </div>
+
+            <form id="quote-form" class="form-group" novalidate>
+                <label for="amount">Amount to send (USD)</label>
+                <input type="number" id="amount" name="amount" inputmode="decimal"
+                       placeholder="e.g. 100" step="0.01"
+                       min="{{ min_amount }}" max="{{ max_amount }}" required>
+                <p id="error" class="error" role="alert" hidden></p>
+                <button type="submit" id="calculate-btn">Get quote</button>
+            </form>
+
+            <section class="results" id="results" aria-live="polite" hidden>
+                <div class="result-item">
+                    <span>Transfer fee ({{ fee_percent }}%)</span>
+                    <span id="fee-amount"></span>
+                </div>
+                <div class="result-item">
+                    <span>Total you pay</span>
+                    <span id="total-amount"></span>
+                </div>
+                <div class="result-item">
+                    <span>Exchange rate</span>
+                    <span id="exchange-rate"></span>
+                </div>
+                <div class="result-item highlight">
+                    <span>Recipient gets</span>
+                    <span id="receiving-amount"></span>
+                </div>
+                <div class="actions">
+                    <button type="button" id="reset-btn" class="secondary">New quote</button>
+                </div>
+            </section>
+
+            <p class="disclaimer">Demo service: quotes use a configured exchange rate, not a live market rate.</p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
